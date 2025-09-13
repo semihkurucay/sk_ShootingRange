@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/XML/XMLDocument.xml to edit this template
+-->
+
+<!DOCTYPE hibernate-configuration SYSTEM 'http://hibernate.org/dtd/hibernate-configuration-3.0.dtd'>
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://A\\SQLEXPRESS:49699;databaseName=db_ShootingRange;encrypt=true;trustServerCertificate=true</property>
+        <property name="hibernate.connection.username">user</property>
+        <property name="hibernate.connection.password">user1</property>
+        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        
+        <mapping class="com.mycompany.sk_shootingrange.fld_AmmoStockAdd.Invoice"/>
+        <mapping class="com.mycompany.sk_shootingrange.fld_AmmoStockAdd.InvoiceStock"/>
+        <mapping class="com.mycompany.sk_shootingrange.fld_Business.Business"/>
+        <mapping class="com.mycompany.sk_shootingrange.fld_Ammo.Ammo"/>
+        <mapping class="com.mycompany.sk_shootingrange.fld_Employee.Employee"/>
+        <mapping class="com.mycompany.sk_shootingrange.fld_Costumer.Costumer"/>
+        <mapping class="com.mycompany.sk_shootingrange.fld_Weapons.Weapon"/>
+        <mapping class="com.mycompany.sk_shootingrange.fld_Poligon.Poligon"/>
+    </session-factory>
+</hibernate-configuration>
+
