@@ -7,6 +7,7 @@ package com.mycompany.sk_shootingrange.fld_Ammo;
 import com.mycompany.sk_shootingrange.fld_Employee.SqlEmployeeProcess;
 import com.mycompany.sk_shootingrange.fld_AmmoStockAdd.frmAmmoStockAdd;
 import com.mycompany.sk_shootingrange.fld_Business.frmBusiness;
+import com.mycompany.sk_shootingrange.frmHistory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -89,6 +90,11 @@ public class frmAmmo extends javax.swing.JFrame {
         setTitle("Mühimmat İşlemleri");
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -256,6 +262,11 @@ public class frmAmmo extends javax.swing.JFrame {
         btnStockHistory.setMaximumSize(new java.awt.Dimension(72, 32));
         btnStockHistory.setMinimumSize(new java.awt.Dimension(72, 32));
         btnStockHistory.setPreferredSize(new java.awt.Dimension(72, 32));
+        btnStockHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStockHistoryActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -381,6 +392,7 @@ public class frmAmmo extends javax.swing.JFrame {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         if (ammo.chkSetName(txtName.getText()) && ammo.chkSetId(txtID.getText())) {
+            
             if (process.update(ammo)) {
                 JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
             } else {
@@ -396,6 +408,7 @@ public class frmAmmo extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         if (ammo.chkSetId(txtID.getText())) {
+            
             if (process.getStock(ammo.getId()) == 0) {
                 if (process.delete(ammo)) {
                     JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
@@ -420,6 +433,18 @@ public class frmAmmo extends javax.swing.JFrame {
         txtName.setText(ammo.getName());
         txtStock.setText(ammo.getStock() + "");
     }//GEN-LAST:event_tblListMouseClicked
+
+    private void btnStockHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStockHistoryActionPerformed
+        // TODO add your handling code here:
+        frmHistory history = new frmHistory('S', id);
+        history.setVisible(true);
+    }//GEN-LAST:event_btnStockHistoryActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        process.exit();
+        eProcess.exit();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

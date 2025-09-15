@@ -7,6 +7,9 @@ package com.mycompany.sk_shootingrange.fld_AmmoStockAdd;
 import com.mycompany.sk_shootingrange.fld_Ammo.Ammo;
 import com.mycompany.sk_shootingrange.fld_Business.Business;
 import java.util.List;
+import javax.swing.DefaultListModel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -24,7 +27,104 @@ public class SqlStockProcess {
             .addAnnotatedClasses(Invoice.class, InvoiceStock.class, Business.class, Ammo.class)
             .buildSessionFactory();
     
-    protected boolean isThereID(String id){
+    public void exit(){
+        if(session != null){
+            session.close();
+        }
+        if(factory != null){
+            factory.close();
+        }
+    }
+    
+    public void getHistoryList(JTable table, String id) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        try {
+            session = factory.openSession();
+            tx = session.beginTransaction();
+
+            List<Object[]> items = session.createQuery("SELECT i.id, i.dateTime, b.id, b.name, COUNT(s.id), i.kdv, i.price FROM Invoice i JOIN i.business b JOIN i.stocks s WHERE cast(b.id as string) LIKE :id OR cast(i.id as string) LIKE :id GROUP BY i.id, i.dateTime, b.id, b.name, i.kdv, i.price", Object[].class)
+                    .setParameter("id", "%" + id + "%")
+                    .getResultList();
+
+            for (Object[] item : items) {
+                model.addRow(new Object[]{item[0], item[1], item[2], item[3], item[4], item[5], item[6]});
+            }
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+    
+    protected Object[] getInvoiceInfo(String id){
+        Object[] invoice = null;
+        
+        try{
+            session = factory.openSession();
+            tx = session.beginTransaction();
+            
+            invoice = session.createQuery("SELECT i.id,b.id, b.name,i.kdv, i.price FROM Invoice i JOIN i.business b WHERE i.id = :id", Object[].class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+            
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        
+        return invoice;
+    }
+    
+    protected DefaultListModel getItems(String id){
+        DefaultListModel model = new DefaultListModel();
+        
+        try{
+            session = factory.openSession();
+            tx = session.beginTransaction();
+            
+            List<Object[]> items = session.createQuery("SELECT a.id, a.name, s.brand, s.stock FROM InvoiceStock s JOIN s.ammo a JOIN s.invoice i WHERE i.id = :id", Object[].class)
+                    .setParameter("id", id)
+                    .getResultList();
+            
+            for(Object[] item : items){
+                model.addElement(item[0] + " - " + item[1] + " - " + item[2] + " - " + item[3]);
+            }
+            
+            tx.commit();
+        }catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        
+        return model;
+    }
+    
+    public boolean isThereID(String id){
         boolean isThere = false;
         
         try{

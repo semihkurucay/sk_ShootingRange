@@ -21,7 +21,7 @@ public class frmEmployee extends javax.swing.JFrame {
      */
     public frmEmployee() {
         initComponents();
-        
+
         jPanel1.setVisible(false);
     }
 
@@ -400,15 +400,17 @@ public class frmEmployee extends javax.swing.JFrame {
         if (employee.chkSetId(txtID.getText()) && employee.chkSetName(txtName.getText()) && employee.chkSetSurname(txtSurname.getText()) && employee.chkSetUsername(txtUsername.getText()) && employee.chkSetPassword(txtPassword.getText()) && employee.chkSetPhone(txtPhone.getText()) && employee.chkSetMail(txtMail.getText()) && employee.chkSetAddress(txtAddress.getText())) {
             employee.setAdmin(chkAdmin.isSelected());
 
-            if (process.add(employee)) {
-                JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.","Ekledi",JOptionPane.INFORMATION_MESSAGE);
-
+            if (!process.isThereEmployee(employee.getId())) {
+                if (process.add(employee)) {
+                    JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.", "Ekledi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.", "Eklenemedi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.","Eklenemedi",JOptionPane.ERROR_MESSAGE);
-
+                JOptionPane.showMessageDialog(null, "Girilen Çalışan TC sistemde kayıtlı!", "Kayıtlı TC", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.","Hatalı Değer",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
 
         }
 
@@ -421,31 +423,36 @@ public class frmEmployee extends javax.swing.JFrame {
             if (employee.chkSetId(txtID.getText()) && employee.chkSetName(txtName.getText()) && employee.chkSetSurname(txtSurname.getText()) && employee.chkSetPassword(txtPassword.getText()) && employee.chkSetPhone(txtPhone.getText()) && employee.chkSetMail(txtMail.getText()) && employee.chkSetAddress(txtAddress.getText())) {
                 employee.setAdmin(chkAdmin.isSelected());
 
-                if (process.update(employee)) {
-                    JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
-
+                if (process.isThereEmployee(employee.getId())) {
+                    if (process.update(employee)) {
+                        JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
-
+                    JOptionPane.showMessageDialog(null, "Girilen Çalışan TC sistemde kayıtlı değil!", "Kayıtlı Olmayan TC", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
-
             }
         } else {
             if (id.equals(txtID.getText())) {
                 if (employee.chkSetId(txtID.getText()) && employee.chkSetPassword(txtPassword.getText())) {
-                    if (process.update_user(employee)) {
-                        JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
 
+                    if (process.isThereEmployee(employee.getId())) {
+                        if (process.update_user(employee)) {
+                            JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
-
+                        JOptionPane.showMessageDialog(null, "Girilen Çalışan TC sistemde kayıtlı değil!", "Kayıtlı Olmayan TC", JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
-
                 }
+            } else {
+                this.dispose();
             }
         }
 
@@ -455,12 +462,15 @@ public class frmEmployee extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         if (employee.chkSetId(txtID.getText())) {
-            if (process.delete(employee)) {
-                JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
 
+            if (process.isThereEmployee(employee.getId())) {
+                if (process.delete(employee)) {
+                    JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.", "Silinemedi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.", "Silinemedi", JOptionPane.ERROR_MESSAGE);
-
+                JOptionPane.showMessageDialog(null, "Girilen Çalışan TC sistemde kayıtlı değil!", "Kayıtlı Olmayan TC", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);

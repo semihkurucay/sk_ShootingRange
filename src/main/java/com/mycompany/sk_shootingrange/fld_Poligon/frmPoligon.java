@@ -8,7 +8,6 @@ import com.mycompany.sk_shootingrange.fld_Ammo.SqlAmmoProcess;
 import com.mycompany.sk_shootingrange.fld_Costumer.SqlCostumerProcess;
 import com.mycompany.sk_shootingrange.fld_Employee.SqlEmployeeProcess;
 import com.mycompany.sk_shootingrange.fld_Weapons.SqlWeaponProcess;
-import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
@@ -87,6 +86,11 @@ public class frmPoligon extends javax.swing.JFrame {
         setTitle("Poligon");
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -349,6 +353,12 @@ public class frmPoligon extends javax.swing.JFrame {
         }
         model.setMaximum(0);
     }//GEN-LAST:event_txtAmmoIDActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        process.exit();
+        eProcess.exit();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

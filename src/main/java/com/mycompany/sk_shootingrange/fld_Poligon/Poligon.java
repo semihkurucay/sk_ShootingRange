@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -50,6 +51,9 @@ public class Poligon {
     
     @Column(name = "price")
     private float price = 0.0f;
+    
+    @Column(name = "date")
+    private LocalDateTime date = LocalDateTime.now();
     
     @Column(name = "userInfo")
     private boolean userInfo = false;

@@ -145,7 +145,7 @@ public class SqlEmployeeProcess {
         return id;
     }
 
-    protected boolean isThereUsername(String username) {
+    private boolean isThereUsername(String username) {
         boolean isThere = false;
 
         try {
@@ -245,7 +245,7 @@ public class SqlEmployeeProcess {
                 tx.commit();
                 isComplate = true;
             } else {
-                JOptionPane.showMessageDialog(null, "kullanıcı adı mevcut");
+                JOptionPane.showMessageDialog(null, "Girdiğiniz kullanıcı adı sistemde kullanılıyor.\nYeni bir kullanıcı adı girin.", "Tekrarlanan Kullanıcı Adı", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (Exception e) {

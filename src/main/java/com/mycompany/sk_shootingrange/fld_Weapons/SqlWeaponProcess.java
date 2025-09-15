@@ -26,6 +26,15 @@ public class SqlWeaponProcess {
             .addAnnotatedClasses(Weapon.class, Poligon.class)
             .buildSessionFactory();
 
+    protected void exit(){
+        if(session != null){
+            session.close();
+        }
+        if(factory != null){
+            factory.close();
+        }
+    }
+    
     protected void list(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);

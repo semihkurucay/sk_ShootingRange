@@ -215,12 +215,11 @@ public class frmLogin extends javax.swing.JFrame {
         String id = process.getEmployeeID(txtUsername.getText(), txtPassword.getText());
 
         if (id.length() == 11) {
-            JOptionPane.showMessageDialog(null, id,id,JOptionPane.ERROR_MESSAGE);
             frmSelect select = new frmSelect(id);
             select.setVisible(true);
             this.dispose();
         }else{
-            //kullanıcı adı/şifre yanlış
+            JOptionPane.showMessageDialog(null, "Girdiğiniz kullanıcı adı ve şifre hatalı!\nLütfen tekrar deneyin.", "Hatalı Giriş",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

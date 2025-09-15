@@ -5,6 +5,7 @@
 package com.mycompany.sk_shootingrange.fld_Weapons;
 
 import com.mycompany.sk_shootingrange.fld_Employee.SqlEmployeeProcess;
+import com.mycompany.sk_shootingrange.frmHistory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,7 +23,7 @@ public class frmWeapones extends javax.swing.JFrame {
      */
     public frmWeapones() {
         initComponents();
-        
+
         jPanel1.setVisible(false);
     }
 
@@ -92,6 +93,11 @@ public class frmWeapones extends javax.swing.JFrame {
         setTitle("Silah İşlemleri");
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -375,11 +381,14 @@ public class frmWeapones extends javax.swing.JFrame {
         if (weapon.chkSetId(txtID.getText()) && weapon.chkSetBrand(txtBrand.getText()) && weapon.chkSetModel(txtModel.getText()) && weapon.chkSetCalibre(txtCalibre.getText()) && weapon.chkSetComment(txtComment.getText())) {
             weapon.setActive(chkActive.isSelected());
 
-            if (process.add(weapon)) {
-                JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.", "Ekledi", JOptionPane.INFORMATION_MESSAGE);
-
+            if (!process.isThereID(weapon.getId())) {
+                if (process.add(weapon)) {
+                    JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.", "Ekledi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.", "Eklenemedi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.", "Eklenemedi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Silah seri numarası sistemde kayıtlı bulunmaktadır!", "Kayıtlı Silah", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
@@ -393,11 +402,14 @@ public class frmWeapones extends javax.swing.JFrame {
         if (weapon.chkSetId(txtID.getText()) && weapon.chkSetBrand(txtBrand.getText()) && weapon.chkSetModel(txtModel.getText()) && weapon.chkSetCalibre(txtCalibre.getText()) && weapon.chkSetComment(txtComment.getText())) {
             weapon.setActive(chkActive.isSelected());
 
-            if (process.update(weapon)) {
-                JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
-
+            if (process.isThereID(weapon.getId())) {
+                if (process.update(weapon)) {
+                    JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Silah seri numarası sistemde kayıtlı değil!", "Kayıtlı Olmayan Silah", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
@@ -411,11 +423,14 @@ public class frmWeapones extends javax.swing.JFrame {
         if (weapon.chkSetId(txtID.getText())) {
             weapon.setActive(chkActive.isSelected());
 
-            if (process.delete(weapon)) {
-                JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.", "Silinemedi", JOptionPane.ERROR_MESSAGE);
-
+            if (process.isThereID(weapon.getId())) {
+                if (process.delete(weapon)) {
+                    JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.", "Silinemedi", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Silah seri numarası sistemde kayıtlı değil!", "Kayıtlı Olmayan Silah", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
@@ -426,6 +441,8 @@ public class frmWeapones extends javax.swing.JFrame {
 
     private void btnHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistoryActionPerformed
         // TODO add your handling code here:
+        frmHistory history = new frmHistory('P', id);
+        history.setVisible(true);
     }//GEN-LAST:event_btnHistoryActionPerformed
 
     private void tblListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListMouseClicked
@@ -439,7 +456,7 @@ public class frmWeapones extends javax.swing.JFrame {
         txtComment.setText(weapon.getComment());
         chkActive.setSelected(weapon.isActive());
         txtComment.setEnabled(!chkActive.isSelected());
-        
+
         txtShoot.setText(process.getFireAmmo(weapon) + "");
     }//GEN-LAST:event_tblListMouseClicked
 
@@ -448,6 +465,12 @@ public class frmWeapones extends javax.swing.JFrame {
         txtComment.setEnabled(!chkActive.isSelected());
         txtComment.setText("");
     }//GEN-LAST:event_chkActiveActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        process.exit();
+        eProcess.exit();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

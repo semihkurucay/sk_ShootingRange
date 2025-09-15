@@ -97,6 +97,11 @@ public class frmAmmoStockAdd extends javax.swing.JFrame {
         setTitle("Stok Ekleme");
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -425,12 +430,10 @@ public class frmAmmoStockAdd extends javax.swing.JFrame {
             if (aProcess.isThereID(Integer.parseInt(txtAmmoID.getText()))) {
                 txtAmmoName.setText(aProcess.getName(Integer.parseInt(txtAmmoID.getText())));
             } else {
-                //mermi yok
                 txtAmmoName.setText("");
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
-
         }
     }//GEN-LAST:event_txtAmmoIDActionPerformed
 
@@ -458,7 +461,6 @@ public class frmAmmoStockAdd extends javax.swing.JFrame {
             model.removeElementAt(list.getSelectedIndex());
         } else {
             JOptionPane.showMessageDialog(null, "Seçili mühümmat yok.", "Hatalı Kaldırma", JOptionPane.WARNING_MESSAGE);
-
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -470,9 +472,14 @@ public class frmAmmoStockAdd extends javax.swing.JFrame {
             process.stockAdd(invoice, stocks);
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
-
         }
     }//GEN-LAST:event_btnStockAddActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        process.exit();
+        eProcess.exit();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

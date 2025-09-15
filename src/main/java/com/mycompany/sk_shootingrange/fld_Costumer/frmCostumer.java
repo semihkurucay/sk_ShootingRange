@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
  * @author semih
  */
 public class frmCostumer extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(frmCostumer.class.getName());
 
     /**
@@ -22,38 +22,38 @@ public class frmCostumer extends javax.swing.JFrame {
      */
     public frmCostumer() {
         initComponents();
-        
+
         jPanel1.setVisible(true);
     }
 
     public frmCostumer(String id) {
         initComponents();
-        
+
         this.setIconImage(new ImageIcon(getClass().getResource("/images/icon.png")).getImage());
         tblList.setModel(new DefaultTableModel(new Object[][]{}, new String[]{"TC", "İsim Soyisim"}));
-        
+
         this.id = id;
         admin = eProcess.isAdmin(id);
-        
+
         setAdminSetting();
         refresh();
     }
-    
+
     private String id = "";
     private boolean admin = false;
     private Costumer costumer = new Costumer();
     private SqlCostumerProcess process = new SqlCostumerProcess();
     private SqlEmployeeProcess eProcess = new SqlEmployeeProcess();
-    
-    private void refresh(){
+
+    private void refresh() {
         process.list(tblList);
     }
-    
-    private void setAdminSetting(){
+
+    private void setAdminSetting() {
         btnUpdate.setEnabled(admin);
         btnDelete.setEnabled(admin);
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -363,62 +363,68 @@ public class frmCostumer extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        if(costumer.chkSetId(txtID.getText()) && costumer.chkSetName(txtName.getText()) && costumer.chkSetSurname(txtSurname.getText()) && costumer.chkSetDate(txtDate.getText()) && costumer.chkSetMail(txtMail.getText()) && costumer.chkSetPhone(txtPhone.getText()) && costumer.chkSetAddress(txtAddress.getText())){
-            if(process.add(costumer)){
-                JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.","Ekledi",JOptionPane.INFORMATION_MESSAGE);
+        if (costumer.chkSetId(txtID.getText()) && costumer.chkSetName(txtName.getText()) && costumer.chkSetSurname(txtSurname.getText()) && costumer.chkSetDate(txtDate.getText()) && costumer.chkSetMail(txtMail.getText()) && costumer.chkSetPhone(txtPhone.getText()) && costumer.chkSetAddress(txtAddress.getText())) {
 
-            }else{
-                JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.","Eklenemedi",JOptionPane.ERROR_MESSAGE);
-
+            if (!process.isThereCostumer(costumer.getId())) {
+                if (process.add(costumer)) {
+                    JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.", "Ekledi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.", "Eklenemedi", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Girilen müşteri TC sistemde kayıtlı!", "Kayıtlı TC", JOptionPane.ERROR_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.","Hatalı Değer",JOptionPane.WARNING_MESSAGE);
-
+        } else {
+            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
         }
-        
+
         refresh();
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
-        if(costumer.chkSetId(txtID.getText()) && costumer.chkSetName(txtName.getText()) && costumer.chkSetSurname(txtSurname.getText()) && costumer.chkSetDate(txtDate.getText()) && costumer.chkSetMail(txtMail.getText()) && costumer.chkSetPhone(txtPhone.getText()) && costumer.chkSetAddress(txtAddress.getText())){
-            if(process.update(costumer)){
-                JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.","Güncellendi",JOptionPane.INFORMATION_MESSAGE);
+        if (costumer.chkSetId(txtID.getText()) && costumer.chkSetName(txtName.getText()) && costumer.chkSetSurname(txtSurname.getText()) && costumer.chkSetDate(txtDate.getText()) && costumer.chkSetMail(txtMail.getText()) && costumer.chkSetPhone(txtPhone.getText()) && costumer.chkSetAddress(txtAddress.getText())) {
 
-            }else{
-                JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.","Güncellenemedi",JOptionPane.ERROR_MESSAGE);
-
+            if (process.isThereCostumer(costumer.getId())) {
+                if (process.update(costumer)) {
+                    JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Girilen müşteri TC sistemde kayıtlı değil!", "Kayıtlı Olmayan TC", JOptionPane.ERROR_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.","Hatalı Değer",JOptionPane.WARNING_MESSAGE);
-
+        } else {
+            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
         }
-        
+
         refresh();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-        if(costumer.chkSetId(txtID.getText())){
-            if(process.delete(costumer)){
-                JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.","Silindi",JOptionPane.INFORMATION_MESSAGE);
+        if (costumer.chkSetId(txtID.getText())) {
 
-            }else{
-                JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.","Silinemedi",JOptionPane.ERROR_MESSAGE);
-
+            if (process.isThereCostumer(costumer.getId())) {
+                if (process.delete(costumer)) {
+                    JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.", "Silinemedi", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Girilen müşteri TC sistemde kayıtlı değil!", "Kayıtlı Olmayan TC", JOptionPane.ERROR_MESSAGE);
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.","Hatalı Değer",JOptionPane.WARNING_MESSAGE);
-
+        } else {
+            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
         }
-        
+
         refresh();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void tblListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListMouseClicked
         // TODO add your handling code here:
         costumer = process.getCostumer(tblList.getValueAt(tblList.getSelectedRow(), 0).toString());
-        
+
         txtID.setText(costumer.getId());
         txtName.setText(costumer.getName());
         txtSurname.setText(costumer.getSurname());

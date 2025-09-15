@@ -94,6 +94,11 @@ public class frmBusiness extends javax.swing.JFrame {
         setTitle("Firmalar");
         setResizable(false);
         setType(java.awt.Window.Type.POPUP);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -371,16 +376,18 @@ public class frmBusiness extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         if (business.chkSetId(txtID.getText()) && business.chkSetName(txtName.getText()) && business.chkSetTaxOffice(txtTaxOffice.getText()) && business.chkSetPhone(txtPhone.getText()) && business.chkSetMail(txtMail.getText()) && business.chkSetCity(txtCity.getText()) && business.chkSetDistrict(txtDistrict.getText()) && business.chkSetAddress(txtAddress.getText())) {
-            if (process.add(business)) {
-                JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.", "Ekledi", JOptionPane.INFORMATION_MESSAGE);
 
+            if (!process.isThereBusiness(business.getId())) {
+                if (process.add(business)) {
+                    JOptionPane.showMessageDialog(null, "Ekleme başarıyla gerçekleşdi.", "Ekledi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.", "Eklenemedi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Ekleme yapılırken hata oluştu!\nEkleme gerçekleşmedi.", "Eklenemedi", JOptionPane.ERROR_MESSAGE);
-
+                JOptionPane.showMessageDialog(null, "Girilen firma VKN sistemde kayıtlı!", "Kayıtlı VKN", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
-
         }
 
         refresh();
@@ -389,16 +396,18 @@ public class frmBusiness extends javax.swing.JFrame {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         if (business.chkSetId(txtID.getText()) && business.chkSetName(txtName.getText()) && business.chkSetTaxOffice(txtTaxOffice.getText()) && business.chkSetPhone(txtPhone.getText()) && business.chkSetMail(txtMail.getText()) && business.chkSetCity(txtCity.getText()) && business.chkSetDistrict(txtDistrict.getText()) && business.chkSetAddress(txtAddress.getText())) {
-            if (process.update(business)) {
-                JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
 
+            if (process.isThereBusiness(business.getId())) {
+                if (process.update(business)) {
+                    JOptionPane.showMessageDialog(null, "Güncelleme başarıyla gerçekleşdi.", "Güncellendi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Güncelleme yapılırken hata oluştu!\nGüncelleme gerçekleşmedi.", "Güncellenemedi", JOptionPane.ERROR_MESSAGE);
-
+                JOptionPane.showMessageDialog(null, "Girilen firma VKN sistemde kayıtlı değil!", "Kayıtlı Olmayan VKN", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
-
         }
 
         refresh();
@@ -407,16 +416,18 @@ public class frmBusiness extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
         if (business.chkSetId(txtID.getText())) {
-            if (process.delete(business)) {
-                JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
 
+            if (process.isThereBusiness(business.getId())) {
+                if (process.delete(business)) {
+                    JOptionPane.showMessageDialog(null, "Silme başarıyla gerçekleşdi.", "Silindi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.", "Silinemedi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Silme yapılırken hata oluştu!\nSilme gerçekleşmedi.", "Silinemedi", JOptionPane.ERROR_MESSAGE);
-
+                JOptionPane.showMessageDialog(null, "Girilen firma VKN sistemde kayıtlı değil!", "Kayıtlı Olmayan VKN", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
-
         }
 
         refresh();
@@ -435,6 +446,12 @@ public class frmBusiness extends javax.swing.JFrame {
         txtDistrict.setText(business.getDistrict());
         txtAddress.setText(business.getAddress());
     }//GEN-LAST:event_tblListMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        process.exit();
+        eProcess.exit();
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
