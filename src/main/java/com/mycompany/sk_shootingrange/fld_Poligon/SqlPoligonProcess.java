@@ -84,6 +84,8 @@ public class SqlPoligonProcess {
             }
 
             tx.commit();
+            
+            isComplate = true;
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();

@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -125,6 +126,8 @@ public class Costumer {
             if (check.getCheck()) {
                 this.id = id;
                 return true;
+            }else{
+                JOptionPane.showMessageDialog(null, "Girilen TC bilgisi geçersizdir!\nSahte TC numarası.", "Hatalı TC", JOptionPane.ERROR_MESSAGE);
             }
         }
         return false;
@@ -152,6 +155,8 @@ public class Costumer {
 
             if (Period.between(this.date, LocalDate.now()).getYears() >= 18) {
                 return true;
+            }else{
+                JOptionPane.showMessageDialog(null, "Girilen doğum tarihi 18 yaşından küçüktür!\nİşlem yapılamaz!", "18 Yaşından Küçük", JOptionPane.WARNING_MESSAGE);
             }
         } catch (Exception e) {
         }

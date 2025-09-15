@@ -26,7 +26,7 @@ public class SqlWeaponProcess {
             .addAnnotatedClasses(Weapon.class, Poligon.class)
             .buildSessionFactory();
 
-    protected void exit(){
+    public void exit(){
         if(session != null){
             session.close();
         }

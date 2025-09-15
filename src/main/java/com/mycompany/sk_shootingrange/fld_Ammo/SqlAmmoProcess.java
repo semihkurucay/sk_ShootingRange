@@ -25,7 +25,7 @@ public class SqlAmmoProcess {
             .addAnnotatedClass(Ammo.class)
             .buildSessionFactory();
 
-    protected void exit(){
+    public void exit(){
         if(session != null){
             session.close();
         }

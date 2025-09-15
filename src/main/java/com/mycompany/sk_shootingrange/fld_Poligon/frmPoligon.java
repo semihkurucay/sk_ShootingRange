@@ -17,7 +17,7 @@ import javax.swing.SpinnerNumberModel;
  * @author semih
  */
 public class frmPoligon extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(frmPoligon.class.getName());
 
     /**
@@ -25,29 +25,29 @@ public class frmPoligon extends javax.swing.JFrame {
      */
     public frmPoligon() {
         initComponents();
-        
+
         jPanel1.setVisible(false);
     }
-    
+
     public frmPoligon(String id) {
         initComponents();
-        
+
         this.setIconImage(new ImageIcon(getClass().getResource("/images/icon.png")).getImage());
-        
+
         spnAmmoCount.setModel(model);
         model.setStepSize(1);
         model.setMinimum(0);
         model.setMaximum(0);
         model.setValue(0);
-        
+
         this.id = id;
         admin = eProcess.isAdmin(id);
     }
-    
+
     private String id = "";
     private boolean admin = false;
     private SpinnerNumberModel model = new SpinnerNumberModel();
-    private Poligon poligon = new Poligon();
+    //private Poligon poligon = new Poligon();
     private SqlPoligonProcess process = new SqlPoligonProcess();
     private SqlAmmoProcess aProcess = new SqlAmmoProcess();
     private SqlEmployeeProcess eProcess = new SqlEmployeeProcess();
@@ -287,53 +287,55 @@ public class frmPoligon extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
+        Poligon poligon = new Poligon();
+
         if (eProcess.isThereEmployee(txtEmployeeID.getText())) {
             poligon.setEmployee(eProcess.getEmployee(txtEmployeeID.getText()));
         } else {
-            JOptionPane.showMessageDialog(null, "Çalışan TC sistemde mevcut değil!","Var Olmayan ID",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Çalışan TC sistemde mevcut değil!", "Var Olmayan ID", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (cProcess.isThereCostumer(txtCostumerID.getText())) {
             poligon.setCostumer(cProcess.getCostumer(txtCostumerID.getText()));
         } else {
-            JOptionPane.showMessageDialog(null, "Müşteri TC sistemde mevcut değil!","Var Olmayan ID",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Müşteri TC sistemde mevcut değil!", "Var Olmayan ID", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         if (wProcess.isThereID(txtWeponsID.getText())) {
             poligon.setWeapon(wProcess.getWeapon(txtWeponsID.getText()));
-            
-            if(!poligon.getWeapon().isActive()){
+
+            if (!poligon.getWeapon().isActive()) {
                 JOptionPane.showMessageDialog(null, "Kullanılmak istenen silah aktif değil.\nAçıklaması : " + poligon.getWeapon().getComment(), "Aktif Olmayan Silah", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Silah seri no sistemde mevcut değil!","Var Olmayan ID",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Silah seri no sistemde mevcut değil!", "Var Olmayan ID", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         try {
             if (aProcess.isThereID(Integer.parseInt(txtAmmoID.getText()))) {
                 poligon.setAmmo(aProcess.getAmmo(Integer.parseInt(txtAmmoID.getText())));
             } else {
-                JOptionPane.showMessageDialog(null, "Mühimmat ID sistemde mevcut değil!","Var Olmayan ID",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Mühimmat ID sistemde mevcut değil!", "Var Olmayan ID", JOptionPane.ERROR_MESSAGE);
                 return;
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.","Hatalı Değer",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
         }
-        
+
         if (poligon.chkSetPrice(txtPrice.getText()) && chkUserInfo.isSelected() && chkSignature.isSelected() && (int) spnAmmoCount.getValue() > 0 && poligon.getAmmo().getStock() >= (int) spnAmmoCount.getValue()) {
             poligon.setStudy(chkStudy.isSelected());
             poligon.setUserInfo(chkUserInfo.isSelected());
             poligon.setUserSignature(chkSignature.isSelected());
             poligon.setCount((int) spnAmmoCount.getValue());
-            
+
             if (process.addPoligon(poligon)) {
-                JOptionPane.showMessageDialog(null, "İşlem başarıyla gerçekleşti.","Tamamlanan İşlem",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "İşlem başarıyla gerçekleşti.", "Tamamlanan İşlem", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(null, "İşlem gerçekleşirken hata ile karşılaşıldı.\nİşlem gerçekleşmedi.","İşlem Tamamlanmadı",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "İşlem gerçekleşirken hata ile karşılaşıldı.\nİşlem gerçekleşmedi.", "İşlem Tamamlanmadı", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnAddActionPerformed
@@ -342,14 +344,18 @@ public class frmPoligon extends javax.swing.JFrame {
         // TODO add your handling code here:
         model.setValue(0);
         try {
-            if (aProcess.isThereID(Integer.parseInt(txtAmmoID.getText()))) {
-                poligon.setAmmo(aProcess.getAmmo(Integer.parseInt(txtAmmoID.getText())));
-                model.setMaximum(poligon.getAmmo().getStock());
+            int id = Integer.parseInt(txtAmmoID.getText());
+            if (aProcess.isThereID(id)) {
+                /*poligon.setAmmo(aProcess.getAmmo(Integer.parseInt(txtAmmoID.getText())));
+                model.setMaximum(poligon.getAmmo().getStock());*/
+
+                model.setMaximum(aProcess.getStock(id));
                 return;
             }
-            JOptionPane.showMessageDialog(null, "Mühimmat ID sistemde mevcut değil!","Var Olmayan ID",JOptionPane.ERROR_MESSAGE);
+
+            JOptionPane.showMessageDialog(null, "Mühimmat ID sistemde mevcut değil!", "Var Olmayan ID", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.","Hatalı Değer",JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
         }
         model.setMaximum(0);
     }//GEN-LAST:event_txtAmmoIDActionPerformed
@@ -357,7 +363,10 @@ public class frmPoligon extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
         process.exit();
+        aProcess.exit();
+        cProcess.exit();
         eProcess.exit();
+        wProcess.exit();
     }//GEN-LAST:event_formWindowClosing
 
     /**

@@ -91,7 +91,7 @@ public class frmSelect extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Kullanıcılar");
+        jLabel2.setText("Müşteriler");
         jLabel2.setMaximumSize(new java.awt.Dimension(100, 20));
         jLabel2.setMinimumSize(new java.awt.Dimension(100, 20));
         jLabel2.setPreferredSize(new java.awt.Dimension(100, 20));
