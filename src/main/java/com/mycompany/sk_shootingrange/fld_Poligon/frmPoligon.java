@@ -47,7 +47,6 @@ public class frmPoligon extends javax.swing.JFrame {
     private String id = "";
     private boolean admin = false;
     private SpinnerNumberModel model = new SpinnerNumberModel();
-    //private Poligon poligon = new Poligon();
     private SqlPoligonProcess process = new SqlPoligonProcess();
     private SqlAmmoProcess aProcess = new SqlAmmoProcess();
     private SqlEmployeeProcess eProcess = new SqlEmployeeProcess();
