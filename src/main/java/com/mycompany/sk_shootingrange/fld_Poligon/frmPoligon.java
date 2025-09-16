@@ -332,7 +332,7 @@ public class frmPoligon extends javax.swing.JFrame {
             poligon.setCount((int) spnAmmoCount.getValue());
 
             if (process.addPoligon(poligon)) {
-                JOptionPane.showMessageDialog(null, "İşlem başarıyla gerçekleşti.", "Tamamlanan İşlem", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "İşlem başarıyla gerçekleşti.\nGüvenlik kurallarını uymayı unutmayın.", "Tamamlanan İşlem", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "İşlem gerçekleşirken hata ile karşılaşıldı.\nİşlem gerçekleşmedi.", "İşlem Tamamlanmadı", JOptionPane.ERROR_MESSAGE);
             }
@@ -345,9 +345,6 @@ public class frmPoligon extends javax.swing.JFrame {
         try {
             int id = Integer.parseInt(txtAmmoID.getText());
             if (aProcess.isThereID(id)) {
-                /*poligon.setAmmo(aProcess.getAmmo(Integer.parseInt(txtAmmoID.getText())));
-                model.setMaximum(poligon.getAmmo().getStock());*/
-
                 model.setMaximum(aProcess.getStock(id));
                 return;
             }

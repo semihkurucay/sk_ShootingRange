@@ -439,7 +439,6 @@ public class frmAmmoStockAdd extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-
         try {
             if (aProcess.isThereID(Integer.parseInt(txtAmmoID.getText())) && stock.chkSetBrand(txtBrandName.getName()) && (int) spnCount.getValue() > 0) {
 
@@ -469,7 +468,15 @@ public class frmAmmoStockAdd extends javax.swing.JFrame {
         if (stocks.size() > 0 && bProcess.isThereBusiness((txtBusinessID.getText())) && invoice.chkSetId(txtInvoiceNo.getText()) && invoice.chkSetKdv(txtKDV.getText()) && invoice.chkSetPrice(txtPrice.getText())) {
             invoice.setBusiness(bProcess.getBusiness(txtBusinessID.getText()));
 
-            process.stockAdd(invoice, stocks);
+            if (!process.isThereID(invoice.getId())) {
+                if (process.stockAdd(invoice, stocks)) {
+                    JOptionPane.showMessageDialog(null, "Mühimmat stoğa başarıyla eklendi.", "Mühimmat Eklendi", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Mühimmat stoğa eklenirken hata ile karşılaşıldı.\nMühimmat stoğa eklenmedi!", "Mühimmat Eklenemedi", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Fatura numarası daha önceden kullanılmış!", "Tekrarlanan Fatura Numarası", JOptionPane.WARNING_MESSAGE);
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Hatalı veri girişi sağlandı.\nLütfen tekrar deneyin.", "Hatalı Değer", JOptionPane.WARNING_MESSAGE);
         }

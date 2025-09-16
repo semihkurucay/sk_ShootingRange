@@ -155,7 +155,7 @@ public class SqlWeaponProcess {
 
             tx.commit();
             
-            return true;
+            isComplate = true;
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -191,7 +191,7 @@ public class SqlWeaponProcess {
 
                 tx.commit();
                 
-                return true;
+                isComplate = true;
             }
 
         } catch (Exception e) {
@@ -220,7 +220,7 @@ public class SqlWeaponProcess {
 
             tx.commit();
             
-            return true;
+            isComplate = true;
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();

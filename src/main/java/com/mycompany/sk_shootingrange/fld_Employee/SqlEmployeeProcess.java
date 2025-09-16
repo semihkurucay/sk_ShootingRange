@@ -4,6 +4,7 @@
  */
 package com.mycompany.sk_shootingrange.fld_Employee;
 
+import jakarta.persistence.NoResultException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -130,6 +131,8 @@ public class SqlEmployeeProcess {
                     .getSingleResult();
 
             tx.commit();
+        } catch (NoResultException e) {
+            
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -152,7 +155,7 @@ public class SqlEmployeeProcess {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Integer count = session.createQuery("SELECT COUNT(id) FROM Employe WHERE username = :username", Integer.class)
+            Long count = session.createQuery("SELECT COUNT(id) FROM Employee WHERE username = :username", Long.class)
                     .setParameter("username", username)
                     .getSingleResult();
 
@@ -182,13 +185,13 @@ public class SqlEmployeeProcess {
         try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             Employee employee = session.find(Employee.class, id);
-            
-            if(employee != null){
+
+            if (employee != null) {
                 isThere = true;
             }
-            
+
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) {

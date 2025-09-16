@@ -420,6 +420,8 @@ public class frmWeapones extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Silmek istediğiniz şey daha önceden bir işelm yapıldıysa silme gerçekleşmiyecektir!", "Silme İşlemi", JOptionPane.WARNING_MESSAGE);
+        
         if (weapon.chkSetId(txtID.getText())) {
             weapon.setActive(chkActive.isSelected());
 

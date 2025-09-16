@@ -27,7 +27,6 @@ public class frmSelect extends javax.swing.JFrame {
     public frmSelect() {
         initComponents();
         
-        this.setIconImage(new ImageIcon(getClass().getResource("/images/icon.png")).getImage());
         this.setTitle("Poligon İşlemleri - HATALI GİRİŞ");
         
         jPanel1.setVisible(false);

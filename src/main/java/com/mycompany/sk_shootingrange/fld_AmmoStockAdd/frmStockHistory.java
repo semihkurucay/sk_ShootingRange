@@ -19,6 +19,8 @@ public class frmStockHistory extends javax.swing.JFrame {
      */
     public frmStockHistory() {
         initComponents();
+        
+        jPanel1.setVisible(false);
     }
 
     public frmStockHistory(String invoice) {

@@ -403,6 +403,8 @@ public class frmCostumer extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Silmek istediğiniz şey daha önceden bir işelm yapıldıysa silme gerçekleşmiyecektir!", "Silme İşlemi", JOptionPane.WARNING_MESSAGE);
+        
         if (costumer.chkSetId(txtID.getText())) {
 
             if (process.isThereCostumer(costumer.getId())) {

@@ -105,11 +105,9 @@ public class frmLogin extends javax.swing.JFrame {
         jLabel3.setText("Şifre : ");
 
         txtUsername.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtUsername.setText("salih");
         txtUsername.setPreferredSize(new java.awt.Dimension(233, 31));
 
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        txtPassword.setText("1234");
         txtPassword.setMaximumSize(new java.awt.Dimension(187, 31));
         txtPassword.setMinimumSize(new java.awt.Dimension(187, 31));
         txtPassword.setPreferredSize(new java.awt.Dimension(187, 31));
