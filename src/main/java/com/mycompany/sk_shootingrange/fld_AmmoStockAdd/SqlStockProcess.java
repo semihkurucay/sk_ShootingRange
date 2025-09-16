@@ -20,22 +20,23 @@ import org.hibernate.cfg.Configuration;
  * @author semih
  */
 public class SqlStockProcess {
+
     private Transaction tx = null;
     private Session session = null;
     private SessionFactory factory = new Configuration()
             .configure("hibernate.cfg.xml")
             .addAnnotatedClasses(Invoice.class, InvoiceStock.class, Business.class, Ammo.class)
             .buildSessionFactory();
-    
-    public void exit(){
-        if(session != null){
+
+    public void exit() {
+        if (session != null) {
             session.close();
         }
-        if(factory != null){
+        if (factory != null) {
             factory.close();
         }
     }
-    
+
     public void getHistoryList(JTable table, String id) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -65,18 +66,18 @@ public class SqlStockProcess {
             }
         }
     }
-    
-    protected Object[] getInvoiceInfo(String id){
+
+    protected Object[] getInvoiceInfo(String id) {
         Object[] invoice = null;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             invoice = session.createQuery("SELECT i.id,b.id, b.name,i.kdv, i.price FROM Invoice i JOIN i.business b WHERE i.id = :id", Object[].class)
                     .setParameter("id", id)
                     .getSingleResult();
-            
+
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) {
@@ -89,27 +90,27 @@ public class SqlStockProcess {
                 session.close();
             }
         }
-        
+
         return invoice;
     }
-    
-    protected DefaultListModel getItems(String id){
+
+    protected DefaultListModel getItems(String id) {
         DefaultListModel model = new DefaultListModel();
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             List<Object[]> items = session.createQuery("SELECT a.id, a.name, s.brand, s.stock FROM InvoiceStock s JOIN s.ammo a JOIN s.invoice i WHERE i.id = :id", Object[].class)
                     .setParameter("id", id)
                     .getResultList();
-            
-            for(Object[] item : items){
+
+            for (Object[] item : items) {
                 model.addElement(item[0] + " - " + item[1] + " - " + item[2] + " - " + item[3]);
             }
-            
+
             tx.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -120,23 +121,23 @@ public class SqlStockProcess {
                 session.close();
             }
         }
-        
+
         return model;
     }
-    
-    public boolean isThereID(String id){
+
+    public boolean isThereID(String id) {
         boolean isThere = false;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
-            if(session.find(Invoice.class, id) != null){
+
+            if (session.find(Invoice.class, id) != null) {
                 isThere = true;
             }
-            
+
             tx.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -147,35 +148,35 @@ public class SqlStockProcess {
                 session.close();
             }
         }
-        
+
         return isThere;
     }
-    
-    protected boolean stockAdd(Invoice invoice, List<InvoiceStock> stocks){
+
+    protected boolean stockAdd(Invoice invoice, List<InvoiceStock> stocks) {
         boolean isComplate = false;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             session.persist(invoice);
-            
-            for(InvoiceStock stock : stocks){
+
+            for (InvoiceStock stock : stocks) {
                 stock.setInvoice(invoice);
-                
+
                 session.persist(stock);
-                
+
                 Ammo ammo = session.find(Ammo.class, stock.getAmmo().getId());
-                if(ammo != null){
+                if (ammo != null) {
                     ammo.setStock(ammo.getStock() + stock.getStock());
                     session.merge(ammo);
                 }
             }
-            
+
             tx.commit();
-            
+
             isComplate = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -186,7 +187,7 @@ public class SqlStockProcess {
                 session.close();
             }
         }
-        
+
         return isComplate;
     }
 }

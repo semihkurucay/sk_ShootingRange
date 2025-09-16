@@ -31,7 +31,6 @@ public class SqlEmployeeProcess {
         if (session != null) {
             session.close();
         }
-
         if (factory != null) {
             factory.close();
         }
@@ -132,7 +131,7 @@ public class SqlEmployeeProcess {
 
             tx.commit();
         } catch (NoResultException e) {
-            
+
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -186,9 +185,7 @@ public class SqlEmployeeProcess {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Employee employee = session.find(Employee.class, id);
-
-            if (employee != null) {
+            if (session.find(Employee.class, id) != null) {
                 isThere = true;
             }
 
@@ -246,11 +243,11 @@ public class SqlEmployeeProcess {
                 session.persist(employee);
 
                 tx.commit();
+                
                 isComplate = true;
             } else {
                 JOptionPane.showMessageDialog(null, "Girdiğiniz kullanıcı adı sistemde kullanılıyor.\nYeni bir kullanıcı adı girin.", "Tekrarlanan Kullanıcı Adı", JOptionPane.WARNING_MESSAGE);
             }
-
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -288,9 +285,9 @@ public class SqlEmployeeProcess {
                 session.merge(emp);
 
                 tx.commit();
+                
                 isComplate = true;
             }
-
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -322,9 +319,9 @@ public class SqlEmployeeProcess {
                 session.merge(emp);
 
                 tx.commit();
+                
                 isComplate = true;
             }
-
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -350,6 +347,7 @@ public class SqlEmployeeProcess {
             session.remove(employee);
 
             tx.commit();
+            
             isComplate = true;
         } catch (Exception e) {
             if (tx.isActive()) {

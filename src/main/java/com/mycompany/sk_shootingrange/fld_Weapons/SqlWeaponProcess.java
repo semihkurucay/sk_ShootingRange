@@ -122,9 +122,7 @@ public class SqlWeaponProcess {
             session = factory.openSession();
             tx = session.beginTransaction();
             
-            Weapon weapon = session.find(Weapon.class, id);
-            
-            if(weapon != null){
+            if(session.find(Weapon.class, id) != null){
                 isThere = true;
             }
             
@@ -179,6 +177,7 @@ public class SqlWeaponProcess {
             tx = session.beginTransaction();
 
             Weapon weap = session.find(Weapon.class, weapon);
+            
             if (weap != null) {
                 weap.setId(weapon.getId());
                 weap.setBrand(weapon.getBrand());
@@ -193,7 +192,6 @@ public class SqlWeaponProcess {
                 
                 isComplate = true;
             }
-
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();

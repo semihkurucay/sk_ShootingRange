@@ -17,38 +17,39 @@ import org.hibernate.cfg.Configuration;
  * @author semih
  */
 public class SqlBusinessProcess {
+
     private Transaction tx = null;
     private Session session = null;
     private SessionFactory factory = new Configuration()
             .configure("hibernate.cfg.xml")
             .addAnnotatedClass(Business.class)
             .buildSessionFactory();
-    
-    protected void exit(){
-        if(session != null){
+
+    protected void exit() {
+        if (session != null) {
             session.close();
         }
-        if(factory != null){
+        if (factory != null) {
             factory.close();
         }
     }
-    
-    protected void list(JTable table){
+
+    protected void list(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             List<Object[]> businesses = session.createQuery("SELECT id, name FROM Business", Object[].class).getResultList();
-            
-            for(Object[] business : businesses){
+
+            for (Object[] business : businesses) {
                 model.addRow(business);
             }
-            
+
             tx.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -60,18 +61,18 @@ public class SqlBusinessProcess {
             }
         }
     }
-    
-    public Business getBusiness(String id){
+
+    public Business getBusiness(String id) {
         Business business = null;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             business = session.find(Business.class, id);
-            
+
             tx.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -82,21 +83,21 @@ public class SqlBusinessProcess {
                 session.close();
             }
         }
-        
+
         return business;
     }
-    
-    public String getName(String id){
+
+    public String getName(String id) {
         String name = "";
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             name = session.find(Business.class, id).getName();
-            
+
             tx.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -107,23 +108,23 @@ public class SqlBusinessProcess {
                 session.close();
             }
         }
-        
+
         return name;
     }
-    
-    public boolean isThereBusiness(String id){
+
+    public boolean isThereBusiness(String id) {
         boolean isThere = false;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
-            if(session.find(Business.class, id) != null){
+
+            if (session.find(Business.class, id) != null) {
                 isThere = true;
             }
-            
+
             tx.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -134,23 +135,23 @@ public class SqlBusinessProcess {
                 session.close();
             }
         }
-        
+
         return isThere;
     }
-    
-    protected boolean add(Business business){
+
+    protected boolean add(Business business) {
         boolean isComplate = false;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             session.persist(business);
-            
+
             tx.commit();
-            
+
             isComplate = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -161,20 +162,20 @@ public class SqlBusinessProcess {
                 session.close();
             }
         }
-        
+
         return isComplate;
     }
-    
-    protected boolean update(Business business){
+
+    protected boolean update(Business business) {
         boolean isComplate = false;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             Business busi = session.find(Business.class, business);
-            
-            if(busi != null){
+
+            if (busi != null) {
                 busi.setId(business.getId());
                 busi.setTaxOffice(business.getTaxOffice());
                 busi.setName(business.getName());
@@ -183,14 +184,14 @@ public class SqlBusinessProcess {
                 busi.setCity(business.getCity());
                 busi.setDistrict(business.getDistrict());
                 busi.setAddress(business.getAddress());
-                
+
                 session.merge(busi);
+
+                tx.commit();
+
+                isComplate = true;
             }
-            
-            tx.commit();
-            
-            isComplate = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -201,23 +202,23 @@ public class SqlBusinessProcess {
                 session.close();
             }
         }
-        
+
         return isComplate;
     }
-    
-    protected boolean delete(Business business){
+
+    protected boolean delete(Business business) {
         boolean isComplate = false;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             session.remove(business);
-            
+
             tx.commit();
-            
+
             isComplate = true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -228,7 +229,7 @@ public class SqlBusinessProcess {
                 session.close();
             }
         }
-        
+
         return isComplate;
     }
 }

@@ -29,23 +29,22 @@ public class SqlCostumerProcess {
         if (session != null) {
             session.close();
         }
-
         if (factory != null) {
             factory.close();
         }
     }
 
-    public Costumer getCostumer(String id){
+    public Costumer getCostumer(String id) {
         Costumer costumer = null;
-        
-        try{
+
+        try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
+
             costumer = session.find(Costumer.class, id);
-            
+
             tx.commit();
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -56,23 +55,21 @@ public class SqlCostumerProcess {
                 session.close();
             }
         }
-        
+
         return costumer;
     }
-    
+
     public boolean isThereCostumer(String id) {
         boolean isThere = false;
 
         try {
             session = factory.openSession();
             tx = session.beginTransaction();
-            
-            Costumer costumer = session.find(Costumer.class, id);
-            
-            if(costumer != null){
+
+            if (session.find(Costumer.class, id) != null) {
                 isThere = true;
             }
-            
+
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) {
@@ -88,7 +85,7 @@ public class SqlCostumerProcess {
 
         return isThere;
     }
-    
+
     protected void list(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -127,7 +124,7 @@ public class SqlCostumerProcess {
             session.persist(costumer);
 
             tx.commit();
-            
+
             isComplate = true;
         } catch (Exception e) {
             if (tx.isActive()) {
@@ -163,11 +160,11 @@ public class SqlCostumerProcess {
                 cost.setAddress(costumer.getAddress());
 
                 session.merge(cost);
-                tx.commit();
                 
+                tx.commit();
+
                 isComplate = true;
             }
-
         } catch (Exception e) {
             if (tx.isActive()) {
                 tx.rollback();
@@ -193,7 +190,7 @@ public class SqlCostumerProcess {
             session.remove(costumer);
 
             tx.commit();
-            
+
             isComplate = true;
         } catch (Exception e) {
             if (tx.isActive()) {

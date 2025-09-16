@@ -25,15 +25,15 @@ public class SqlAmmoProcess {
             .addAnnotatedClass(Ammo.class)
             .buildSessionFactory();
 
-    public void exit(){
-        if(session != null){
+    public void exit() {
+        if (session != null) {
             session.close();
         }
-        if(factory != null){
+        if (factory != null) {
             factory.close();
         }
     }
-    
+
     protected void list(JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
@@ -87,9 +87,9 @@ public class SqlAmmoProcess {
         return ammo;
     }
 
-    public String getName(int id){
+    public String getName(int id) {
         String name = "";
-        
+
         try {
             session = factory.openSession();
             tx = session.beginTransaction();
@@ -110,10 +110,10 @@ public class SqlAmmoProcess {
                 session.close();
             }
         }
-        
+
         return name;
     }
-    
+
     public int getStock(int id) {
         int stock = 0;
 
@@ -140,20 +140,18 @@ public class SqlAmmoProcess {
 
         return stock;
     }
-    
-    public boolean isThereID(int id){
+
+    public boolean isThereID(int id) {
         boolean isThere = false;
-        
+
         try {
             session = factory.openSession();
             tx = session.beginTransaction();
 
-            Ammo ammo = session.find(Ammo.class, id);
-
-            if(ammo != null){
+            if (session.find(Ammo.class, id) != null) {
                 isThere = true;
             }
-            
+
             tx.commit();
         } catch (Exception e) {
             if (tx.isActive()) {
@@ -166,10 +164,10 @@ public class SqlAmmoProcess {
                 session.close();
             }
         }
-        
+
         return isThere;
     }
-    
+
     protected boolean add(Ammo ammo) {
         boolean isComplate = false;
 
