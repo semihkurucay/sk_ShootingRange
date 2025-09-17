@@ -58,3 +58,11 @@ Stoklarınızı dijitalleştirmek isteyen bir poligon işletmecisi iseniz bu uyg
 <img width="739" height="549" alt="Ekran görüntüsü 2025-09-15 165105" src="https://github.com/user-attachments/assets/68f056ba-36f6-4ad3-9a69-ba059402dbbe" />
 <img width="719" height="543" alt="Ekran görüntüsü 2025-09-15 165110" src="https://github.com/user-attachments/assets/77928a8f-8df6-4762-84f8-0d684b7e3b3b" />
 <img width="1919" height="1025" alt="Ekran görüntüsü 2025-09-15 165122" src="https://github.com/user-attachments/assets/dfdc208a-cec5-4760-9dd9-c21d9e0db6fe" />
+
+## Lisans
+
+Bu proje [Creative Commons Attribution-NonCommercial 4.0 International](https://creativecommons.org/licenses/by-nc/4.0/) lisansı ile lisanslanmıştır.
+
+🔒 Ticari kullanım yasaktır.  
+📎 Eğitim ve kişisel kullanım için serbesttir.  
+📩 Ticari kullanım için iletişime geçiniz.
